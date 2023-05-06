@@ -1,0 +1,84 @@
+### success
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "anna",
+  "about": "frontender",
+  "avatar": "abcd"
+}
+
+### 400
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+"name": "a",
+"about": "frontender",
+"avatar": "abcd"
+}
+
+###
+GET http://localhost:3000/users
+Content-Type: application/json
+
+### 404
+GET http://localhost:3000/users/123456789012
+Content-Type: application/json
+
+###
+PATCH http://localhost:3000/users/me
+Content-Type: application/json
+
+{
+  "name": "anna3"
+}
+
+### 400
+PATCH http://localhost:3000/users/me
+Content-Type: application/json
+
+{
+  "name": "a"
+}
+
+### 200
+PATCH http://localhost:3000/users/me/avatar
+Content-Type: application/json
+
+{
+  "avatar": "abcd2"
+}
+
+### 200
+GET http://localhost:3000/cards
+Content-Type: application/json
+
+### 200
+POST http://localhost:3000/cards
+Content-Type: application/json
+
+{
+  "name": "name1",
+  "link": "abc"
+}
+
+### 200
+DELETE http://localhost:3000/cards/64569a24287f8b41e954e117
+Content-Type: application/json
+
+### 200
+PUT http://localhost:3000/cards/645699cf287f8b41e954e112/likes
+Content-Type: application/json
+
+### 200
+DELETE http://localhost:3000/cards/645699cf287f8b41e954e112/likes
+Content-Type: application/json
+
+###
+PATCH http://localhost:3000/404
+Content-Type: application/json
+
+###
+GET http://localhost:3000/users/text
+Content-Type: application/json
