@@ -20,7 +20,7 @@ module.exports.createCard = async (req, res) => {
       link,
       owner: userId,
     });
-    res.send({ data: card });
+    res.status(201).send({ data: card });
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
@@ -40,11 +40,11 @@ module.exports.deleteCard = async (req, res) => {
     }
 
     await Card.findByIdAndDelete(cardId);
-    res.send({});
+    res.send(card);
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Карточка не найдена' })
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
     res.status(500).send({ message: 'Произошла ошибка' });
   }
@@ -67,7 +67,7 @@ module.exports.likeCard = async (req, res) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Карточка не найдена' })
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
     res.status(500).send({ message: 'Произошла ошибка' });
   }
@@ -90,7 +90,7 @@ module.exports.dislikeCard = async (req, res) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Карточка не найдена' })
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
     res.status(500).send({ message: 'Произошла ошибка' });
   }

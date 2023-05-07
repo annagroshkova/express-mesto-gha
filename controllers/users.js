@@ -5,7 +5,7 @@ module.exports.createUser = async (req, res) => {
 
   try {
     const user = await User.create({ name, about, avatar });
-    res.send(user);
+    res.status(201).send(user);
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
@@ -31,6 +31,9 @@ module.exports.patchUser = async (req, res) => {
     console.log(err);
     if (err.name === 'ValidationError') {
       return res.status(400).send({ message: 'Ошибка валидации' });
+    }
+    if (err.name === 'CastError') {
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
     res.status(500).send({ message: 'Произошла ошибка' });
   }
@@ -58,13 +61,20 @@ module.exports.patchUserAvatar = async (req, res) => {
     if (err.name === 'ValidationError') {
       return res.status(400).send({ message: 'Ошибка валидации' });
     }
+    if (err.name === 'CastError') {
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
+    }
     res.status(500).send({ message: 'Произошла ошибка' });
   }
 };
 
 module.exports.getUsers = async (req, res) => {
-  const users = await User.find({});
-  res.send(users);
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(500).send({ message: 'Произошла ошибка' });
+  }
 };
 
 module.exports.getUser = async (req, res) => {
@@ -78,9 +88,9 @@ module.exports.getUser = async (req, res) => {
       res.status(404).send({ message: 'Пользователь не найден' });
     }
   } catch (err) {
-    console.log(err, err.name);
+    console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Пользователь не найден' })
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
     res.status(500).send({ message: 'Произошла ошибка' });
   }
