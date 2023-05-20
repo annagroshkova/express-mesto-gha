@@ -9,7 +9,7 @@ module.exports = {
   trailingComma: 'all',
   bracketSpacing: true,
   bracketSameLine: false,
-  arrowParens: 'avoid',
+  arrowParens: 'always',
   proseWrap: 'always',
   htmlWhitespaceSensitivity: 'css',
   endOfLine: 'lf',

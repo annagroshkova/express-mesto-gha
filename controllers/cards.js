@@ -1,16 +1,17 @@
 const Card = require('../models/cards');
+const AppError = require('../errors/AppError');
 
-module.exports.getCards = async (req, res) => {
+module.exports.getCards = async (req, res, next) => {
   try {
     const cards = await Card.find({});
     res.send(cards);
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: 'Произошла ошибка' });
+    return next(new AppError());
   }
 };
 
-module.exports.createCard = async (req, res) => {
+module.exports.createCard = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { name, link } = req.body;
 
@@ -24,19 +25,24 @@ module.exports.createCard = async (req, res) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Ошибка валидации' });
+      return next(new AppError('Ошибка валидации', 400));
     }
-    res.status(500).send({ message: 'Произошла ошибка' });
+    return next(new AppError());
   }
 };
 
-module.exports.deleteCard = async (req, res) => {
+module.exports.deleteCard = async (req, res, next) => {
+  const { _id: userId } = req.user;
   const { cardId } = req.params;
 
   try {
     const card = await Card.findById(cardId);
     if (!card) {
-      return res.status(404).send({ message: 'Карточка не найдена' });
+      return next(new AppError('Карточка не найдена', 404));
+    }
+
+    if (String(card.owner) !== userId) {
+      return next(new AppError('Невозможно удалить чужую карточку', 403));
     }
 
     await Card.findByIdAndDelete(cardId);
@@ -44,13 +50,13 @@ module.exports.deleteCard = async (req, res) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные' });
+      return next(new AppError('Переданы некорректные данные', 400));
     }
-    res.status(500).send({ message: 'Произошла ошибка' });
+    return next(new AppError());
   }
 };
 
-module.exports.likeCard = async (req, res) => {
+module.exports.likeCard = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { cardId } = req.params;
 
@@ -61,19 +67,19 @@ module.exports.likeCard = async (req, res) => {
       { new: true },
     );
     if (!card) {
-      return res.status(404).send({ message: 'Карточка не найдена' });
+      return next(new AppError('Карточка не найдена', 404));
     }
     res.send(card);
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные' });
+      return next(new AppError('Переданы некорректные данные', 400));
     }
-    res.status(500).send({ message: 'Произошла ошибка' });
+    return next(new AppError());
   }
 };
 
-module.exports.dislikeCard = async (req, res) => {
+module.exports.dislikeCard = async (req, res, next) => {
   const { _id: userId } = req.user;
   const { cardId } = req.params;
 
@@ -84,14 +90,14 @@ module.exports.dislikeCard = async (req, res) => {
       { new: true },
     );
     if (!card) {
-      return res.status(404).send({ message: 'Карточка не найдена' });
+      return next(new AppError('Карточка не найдена', 404));
     }
     res.send(card);
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные' });
+      return next(new AppError('Переданы некорректные данные', 400));
     }
-    res.status(500).send({ message: 'Произошла ошибка' });
+    return next(new AppError());
   }
 };
