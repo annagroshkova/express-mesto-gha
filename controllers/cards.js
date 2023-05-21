@@ -1,5 +1,10 @@
 const Card = require('../models/cards');
-const AppError = require('../errors/AppError');
+const {
+  AppError,
+  STATUS_BAD_REQUEST,
+  STATUS_NOT_FOUND,
+  STATUS_FORBIDDEN,
+} = require('../errors/AppError');
 
 module.exports.getCards = async (req, res, next) => {
   try {
@@ -25,7 +30,7 @@ module.exports.createCard = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
-      return next(new AppError('Ошибка валидации', 400));
+      return next(new AppError('Ошибка валидации', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -38,11 +43,11 @@ module.exports.deleteCard = async (req, res, next) => {
   try {
     const card = await Card.findById(cardId);
     if (!card) {
-      return next(new AppError('Карточка не найдена', 404));
+      return next(new AppError('Карточка не найдена', STATUS_NOT_FOUND));
     }
 
     if (String(card.owner) !== userId) {
-      return next(new AppError('Невозможно удалить чужую карточку', 403));
+      return next(new AppError('Невозможно удалить чужую карточку', STATUS_FORBIDDEN));
     }
 
     await Card.findByIdAndDelete(cardId);
@@ -50,7 +55,7 @@ module.exports.deleteCard = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -67,13 +72,13 @@ module.exports.likeCard = async (req, res, next) => {
       { new: true },
     );
     if (!card) {
-      return next(new AppError('Карточка не найдена', 404));
+      return next(new AppError('Карточка не найдена', STATUS_NOT_FOUND));
     }
     res.send(card);
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -90,13 +95,13 @@ module.exports.dislikeCard = async (req, res, next) => {
       { new: true },
     );
     if (!card) {
-      return next(new AppError('Карточка не найдена', 404));
+      return next(new AppError('Карточка не найдена', STATUS_NOT_FOUND));
     }
     res.send(card);
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }

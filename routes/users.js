@@ -12,7 +12,7 @@ router.get(
   '/:userId',
   celebrate({
     params: {
-      userId: Joi.string().alphanum().length(24).required(),
+      userId: Joi.string().hex().length(24).required(),
     },
   }),
   getUser,
@@ -22,10 +22,8 @@ router.patch(
   '/me',
   celebrate({
     body: {
-      name: Joi.string().min(2).max(30).optional(),
-      about: Joi.string().min(2).max(30).optional(),
-      avatar: Joi.string().pattern(URL_REGEX).optional(),
-      email: Joi.string().email().optional(),
+      name: Joi.string().min(2).max(30).required(),
+      about: Joi.string().min(2).max(30).required(),
     },
   }),
   patchUser,

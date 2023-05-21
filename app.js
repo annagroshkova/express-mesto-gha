@@ -10,7 +10,7 @@ const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const AppError = require('./errors/AppError');
+const { AppError, STATUS_NOT_FOUND } = require('./errors/AppError');
 
 const URL_REGEX = /^https?:\/\/(www\.)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]*#?$/;
 
@@ -27,7 +27,7 @@ app.post(
   celebrate({
     body: {
       email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
+      password: Joi.string().required(),
     },
   }),
   login,
@@ -41,7 +41,7 @@ app.post(
       about: Joi.string().min(2).max(30).optional(),
       avatar: Joi.string().pattern(URL_REGEX).optional(),
       email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
+      password: Joi.string().required(),
     },
   }),
   createUser,
@@ -52,7 +52,7 @@ app.use(auth);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 
-app.use((req, res, next) => next(new AppError('Путь не найден', 404)));
+app.use((req, res, next) => next(new AppError('Путь не найден', STATUS_NOT_FOUND)));
 
 app.use(errors());
 

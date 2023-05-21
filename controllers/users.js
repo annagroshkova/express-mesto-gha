@@ -1,7 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
-const AppError = require('../errors/AppError');
+const {
+  AppError,
+  STATUS_UNAUTHORIZED,
+  STATUS_BAD_REQUEST,
+  STATUS_NOT_FOUND,
+  STATUS_CONFLICT,
+} = require('../errors/AppError');
 
 const { JWT_SECRET } = process.env;
 
@@ -12,12 +18,12 @@ module.exports.login = async (req, res, next) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      return next(new AppError('Неправильные почта или пароль', 401));
+      return next(new AppError('Неправильные почта или пароль', STATUS_UNAUTHORIZED));
     }
 
     const matched = await bcrypt.compare(password, user.password);
     if (!matched) {
-      return next(new AppError('Неправильные почта или пароль', 401));
+      return next(new AppError('Неправильные почта или пароль', STATUS_UNAUTHORIZED));
     }
 
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '1h' });
@@ -51,10 +57,10 @@ module.exports.createUser = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {
-      return next(new AppError('Пользователь с таким имэйлом уже существует', 409));
+      return next(new AppError('Пользователь с таким имэйлом уже существует', STATUS_CONFLICT));
     }
     if (err.name === 'ValidationError') {
-      return next(new AppError('Ошибка валидации', 400));
+      return next(new AppError('Ошибка валидации', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -69,16 +75,16 @@ module.exports.patchUser = async (req, res, next) => {
       runValidators: true,
     });
     if (!user) {
-      return next(new AppError('Пользователь не найден', 404));
+      return next(new AppError('Пользователь не найден', STATUS_NOT_FOUND));
     }
     res.send(user);
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
-      return next(new AppError('Ошибка валидации', 400));
+      return next(new AppError('Ошибка валидации', STATUS_BAD_REQUEST));
     }
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -98,16 +104,16 @@ module.exports.patchUserAvatar = async (req, res, next) => {
       },
     );
     if (!user) {
-      return next(new AppError('Пользователь не найден', 404));
+      return next(new AppError('Пользователь не найден', STATUS_NOT_FOUND));
     }
     res.send(user);
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
-      return next(new AppError('Ошибка валидации', 400));
+      return next(new AppError('Ошибка валидации', STATUS_BAD_REQUEST));
     }
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -130,12 +136,12 @@ module.exports.getUser = async (req, res, next) => {
     if (user) {
       res.send(user);
     } else {
-      return next(new AppError('Пользователь не найден', 404));
+      return next(new AppError('Пользователь не найден', STATUS_NOT_FOUND));
     }
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
@@ -149,12 +155,12 @@ module.exports.getMe = async (req, res, next) => {
     if (user) {
       res.send(user);
     } else {
-      return next(new AppError('Пользователь не найден', 404));
+      return next(new AppError('Пользователь не найден', STATUS_NOT_FOUND));
     }
   } catch (err) {
     console.log(err);
     if (err.name === 'CastError') {
-      return next(new AppError('Переданы некорректные данные', 400));
+      return next(new AppError('Переданы некорректные данные', STATUS_BAD_REQUEST));
     }
     return next(new AppError());
   }
