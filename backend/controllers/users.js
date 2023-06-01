@@ -27,7 +27,7 @@ module.exports.login = async (req, res, next) => {
       return next(new AppError('Неправильные почта или пароль', STATUS_UNAUTHORIZED));
     }
 
-    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '30d' });
     const maxAge = 1000 * 60 * 60 * 24 * 30; // 30 days
 
     res
