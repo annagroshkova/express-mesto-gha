@@ -63,7 +63,8 @@ class Auth {
 }
 
 export const auth = new Auth({
-  baseUrl: 'https://auth.nomoreparties.co',
+  // baseUrl: 'https://auth.nomoreparties.co',
+  baseUrl: 'https://api.anna.nomoredomains.rocks',
   headers: {
     'Content-Type': 'application/json',
   },
