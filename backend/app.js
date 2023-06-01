@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', requestHeaders);
     const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Max-Age: 86400');
+    res.header('Access-Control-Max-Age', '86400');
     return res.end();
   }
 
