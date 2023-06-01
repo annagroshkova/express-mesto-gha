@@ -1,0 +1,29 @@
+.register__input {
+  display: block;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: rgba(204, 204, 204, 1) 2px solid;
+  color: white;
+  background-color: black;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: start;
+  height: 27px;
+  margin: 0 0 30px;
+  padding: 0;
+}
+
+.register__input::-webkit-input-placeholder {
+  color: rgba(204, 204, 204, 1);
+}
+.register__input::-moz-placeholder {
+  color: rgba(204, 204, 204, 1);
+}
+.register__input::-ms-input-placeholder {
+  color: rgba(204, 204, 204, 1);
+}
+.register__input::placeholder {
+  color: rgba(204, 204, 204, 1);
+}
