@@ -33,8 +33,6 @@ export default function App() {
   }
 
   function getMyInfo() {
-    console.log('getMyInfo called with ' + token)
-
     api
       .getUserInfo()
       .then(user => {
