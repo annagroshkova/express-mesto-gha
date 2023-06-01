@@ -26,7 +26,7 @@ module.exports.createCard = async (req, res, next) => {
       link,
       owner: userId,
     });
-    res.status(201).send({ data: card });
+    res.status(201).send(card);
   } catch (err) {
     console.log(err);
     if (err.name === 'ValidationError') {
