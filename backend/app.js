@@ -20,7 +20,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 const allowedCors = [
   'https://anna.nomoredomains.rocks',
   'http://anna.nomoredomains.rocks',
-  'localhost:3000'
+  'http://localhost:3000',
 ];
 
 app.use(function(req, res, next) {
