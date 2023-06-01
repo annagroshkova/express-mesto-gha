@@ -47,19 +47,6 @@ class Auth {
       body: JSON.stringify(body),
     });
   }
-
-  /**
-   * @param {string} token
-   * @returns {Promise<import("../types").MyInfoResponse>}
-   */
-  getMyInfo(token) {
-    return this._request(`users/me`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  }
 }
 
 export const auth = new Auth({

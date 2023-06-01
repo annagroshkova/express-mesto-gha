@@ -7,10 +7,11 @@ import EditAvatarPopup from './EditAvatarPopup';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { api } from '../utils/api';
-import { useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 export default function Home(props) {
+  const currentUserFromContext = useContext(CurrentUserContext);
   const [currentUser, setCurrentUser] = useState(/** @type {import("../types").UserObject} */ {});
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -22,9 +23,9 @@ export default function Home(props) {
   const [cards, setCards] = useState(/** @type {import("../types").CardObject[]} */ []);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([user, cards]) => {
-        setCurrentUser(user);
+    setCurrentUser(currentUserFromContext)
+    Promise.all([api.getInitialCards()])
+      .then(([cards]) => {
         setCards(cards);
       })
       .catch(err => console.error(err));
@@ -101,7 +102,7 @@ export default function Home(props) {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <>
       <Header linkText="Выйти" onLinkClick={props.onLogout} linkExtraClass="header__link_grey" />
 
       <Main
@@ -143,6 +144,6 @@ export default function Home(props) {
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
       <Footer />
-    </CurrentUserContext.Provider>
+    </>
   );
 }

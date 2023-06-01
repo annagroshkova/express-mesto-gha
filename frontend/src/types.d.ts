@@ -1,17 +1,20 @@
 export interface UserObject {
   about: string;
   avatar: string;
-  cohort?: string;
+  // cohort?: string;
   name: string;
+  email: string;
   _id: string;
 }
 
 export interface CardObject {
   createdAt: string;
-  likes: UserObject[];
+  // likes: UserObject[];
+  likes: string[];
   link: string;
   name: string;
-  owner: UserObject;
+  // owner: UserObject;
+  owner: string;
   _id: string;
 }
 
@@ -27,10 +30,6 @@ export interface Credentials {
 
 export interface SigninResponse {
   token: string;
-}
-
-export interface MyInfoResponse {
-  data: MyInfo;
 }
 
 export interface MyInfo {

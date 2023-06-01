@@ -2,20 +2,20 @@ import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
-import { MyInfoContext } from '../contexts/MyInfoContext';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { useEffect, useState } from 'react';
 import ProtectedRoute from './ProtectedRoute';
 import { getToken, removeToken, saveToken } from '../utils/storage';
-import { auth } from '../utils/auth';
+import {api} from "../utils/api";
 
 export default function App() {
   const navigate = useNavigate();
   const [token, setToken] = useState(/** @type {string | null} */ getToken());
-  const [myInfo, setMyInfo] = useState(/** @type {import("../types").MyInfo | null} */ null);
+  const [currentUser, setCurrentUser] = useState(/** @type {import("../types").UserObject | {}} */ {});
 
   useEffect(() => {
     getMyInfo();
-  }, [token]);
+  }, [])
 
   /**
    *
@@ -29,19 +29,16 @@ export default function App() {
   function handleLogout() {
     removeToken();
     setToken(null);
-    setMyInfo(null);
+    setCurrentUser(null);
   }
 
   function getMyInfo() {
-    if (!token) {
-      setMyInfo(null);
-      return;
-    }
+    console.log('getMyInfo called with ' + token)
 
-    auth
-      .getMyInfo(token)
-      .then(res => {
-        setMyInfo(res.data);
+    api
+      .getUserInfo()
+      .then(user => {
+        setCurrentUser(user);
         navigate('/');
       })
       .catch(err => console.error(err));
@@ -49,7 +46,7 @@ export default function App() {
 
   return (
     <div className="App body">
-      <MyInfoContext.Provider value={myInfo}>
+      <CurrentUserContext.Provider value={currentUser}>
         <Routes>
           <Route
             path="/"
@@ -61,7 +58,7 @@ export default function App() {
           />
           <Route path="/sign-up" element={token ? <Navigate to="/" replace /> : <Register />} />
         </Routes>
-      </MyInfoContext.Provider>
+      </CurrentUserContext.Provider>
     </div>
   );
 }
