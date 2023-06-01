@@ -1,0 +1,16 @@
+.header__logo {
+  flex-grow: 4;
+  align-self: start;
+  color: white;
+  padding: 0 0 32px 27px;
+  width: 104px;
+  height: 24px;
+}
+
+@media screen and (min-width: 918px) {
+  .header__logo {
+    padding: 0 0 41px 0;
+    width: 142px;
+    height: 33px;
+  }
+}

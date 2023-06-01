@@ -1,0 +1,12 @@
+.header__link {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  padding-right: 27px;
+  cursor: pointer;
+  transition: color 0.2s ease-out;
+}
+
+.header__link:hover {
+  color: rgba(225, 225, 225, 0.6);
+}

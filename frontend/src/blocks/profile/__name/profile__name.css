@@ -1,0 +1,11 @@
+.profile__name {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+}
+
+@media screen and (min-width: 918px) {
+  .profile__name {
+    text-align: start;
+  }
+}

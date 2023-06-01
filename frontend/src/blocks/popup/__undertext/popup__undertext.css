@@ -1,0 +1,12 @@
+.popup__undertext {
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0.5px;
+  text-align: start;
+  margin: 0;
+  position: absolute;
+  bottom: -22px;
+  left: 0;
+}

@@ -1,0 +1,22 @@
+.profile__avatar-edit-button {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: url('../../../images/edit-button.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px 26px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: '';
+  transition: all 0.3s ease;
+  z-index: 1;
+  opacity: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+.profile__avatar-edit-button:hover {
+  opacity: 1;
+}

@@ -1,0 +1,14 @@
+.popup__inner-container {
+  display: flex;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 880px) {
+  .popup__inner-container {
+    height: 490px;
+    width: auto;
+    max-width: 816px;
+  }
+}
